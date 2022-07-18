@@ -23,11 +23,9 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
 /**
- * IN PROGRESS: I'm in the process of ejecting from the Lucene demo. I want one main thing: Don't write files (this makes for an easier demo)
- * <p>
  * This is a simple demo of Apache Lucene. It indexes and searches over the short stories in this Git repository.
  * <p>
- * Specifically, the program indexes the "short-stories/" directory and then prompts the user for a query.
+ * Specifically, the program indexes the "short-stories/" directory and then executes a few simple searches.
  */
 public class Runner {
   private static final Path SHORT_STORIES_DIR = Path.of("short-stories");
