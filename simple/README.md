@@ -49,7 +49,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [x] DONE Eject from the official Lucene demo and create a demo of my own. It might be interesting to create an index over
       JSON files. And then maybe even highlight the query match in the console?
 * [ ] Make sure unusual characters work. For example, search by emoji.
-* [ ] What does fuzzy searching look like? I want to search with "fish" and find "starfish" as a result.
+* [x] DONE What does fuzzy searching look like? I want to search with "fish" and find "starfish" as a result.
 
 
 ## Reference

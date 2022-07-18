@@ -61,6 +61,13 @@ public class Runner {
     log.info("Let's search for the text content: '{}'", word);
     IndexSearcher searcher = new IndexSearcher(reader);
     var parser = new StandardQueryParser(analyzer);
+    {
+      // By default, leading wildcards are not allowed because when used, they cause the search to do a full scan of the
+      // term index. This is slow relative to a normal index-driven search. For example, you can't search "*fish" in the
+      // hopes if finding matches for "starfish". Fortunately, you can relax this restriction, but you should consider
+      // the impact to performance.
+      parser.setAllowLeadingWildcard(true);
+    }
     Query query = parser.parse(word, FileAsLinesIndexer.FIELD_CONTENTS);
 
     TopDocs results = searcher.search(query, 10);
