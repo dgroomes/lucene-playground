@@ -89,10 +89,6 @@ public class Runner {
     });
   }
 
-  /**
-   * TODO can we write the index to memory instead of a file? I mostly care just to have less cleanup for the demo, but
-   * also this is a feature I'm looking for.
-   */
   private static IndexWriter indexWriter(FSDirectory dir, StandardAnalyzer analyzer) throws IOException {
     IndexWriterConfig config = new IndexWriterConfig(analyzer);
 

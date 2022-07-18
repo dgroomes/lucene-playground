@@ -76,6 +76,8 @@ General clean-ups, TODOs and things I wish to implement for this project:
       version 9.2.0. Now I need to copy it in and have the Gradle depend on it.
 * [x] DONE Eject from the official Lucene demo and create a demo of my own. It might be interesting to create an index over
       JSON files. And then maybe even highlight the query match in the console?
+* [ ] Use an in-memory index. This is convenient for demos so we don't have to clean up files, but also I'm
+      interested in the feature.
 * [ ] Make sure unusual characters work. For example, search by emoji.
 * [ ] What does fuzzy searching look like? I want to search with "fish" and find "starfish" as a result.
 
@@ -83,3 +85,6 @@ General clean-ups, TODOs and things I wish to implement for this project:
 
 * [Apache Lucene](https://lucene.apache.org)
 * [GitHub repo: `apache/lucene`](https://github.com/apache/lucene)
+* [Lucene JavaDoc: `MemoryIndex`](https://lucene.apache.org/core/9_2_0/memory/org/apache/lucene/index/memory/MemoryIndex.html)
+  > Rather than targeting fulltext search of infrequent queries over huge persistent data archives (historic search),
+  > this class targets fulltext search of huge numbers of queries over comparatively small transient realtime data (prospective search).
