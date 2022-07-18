@@ -36,7 +36,7 @@ See the README in [simple/](simple/).
 
 NOT YET IMPLEMENTED
 
-A demonstration of Lucene's in-memory index.
+A demonstration of Lucene using indexes that reside only in-memory and not on disk.
 
 See the README in [in-memory/](in-memory/).
 
