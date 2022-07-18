@@ -32,6 +32,14 @@ This is a simple runnable demo of Lucene. It is a prototypical "hello world" exa
 
 See the README in [simple/](simple/).
 
+### `in-memory/`
+
+NOT YET IMPLEMENTED
+
+A demonstration of Lucene's in-memory index.
+
+See the README in [in-memory/](in-memory/).
+
 
 ## Notes
 
@@ -48,14 +56,11 @@ with a modern Gradle setup. This is often not the case.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Use an in-memory index. This is convenient for demos so we don't have to clean up files, but also I'm
+* [ ] IN PROGRESS Use an in-memory index. This is convenient for demos so we don't have to clean up files, but also I'm
       interested in the feature.
-* [ ] IN PROGRESS Split into into independent sub-projects
+* [x] DONE Split into into independent sub-projects
 
 ## Reference
 
 * [Apache Lucene](https://lucene.apache.org)
 * [GitHub repo: `apache/lucene`](https://github.com/apache/lucene)
-* [Lucene JavaDoc: `MemoryIndex`](https://lucene.apache.org/core/9_2_0/memory/org/apache/lucene/index/memory/MemoryIndex.html)
-  > Rather than targeting fulltext search of infrequent queries over huge persistent data archives (historic search),
-  > this class targets fulltext search of huge numbers of queries over comparatively small transient realtime data (prospective search).
