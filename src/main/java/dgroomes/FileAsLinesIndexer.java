@@ -12,9 +12,18 @@ import java.nio.file.Path;
 
 /**
  * Given a file, treat each line of the file as a Lucene document and index the documents.
+ * <p>
+ * The shape of the index is:
+ * <p>
+ * - A {@link String} field named "file_name"
+ * - A {@link LongPoint} field name "line_number"
+ * - A {@link TextField} field named "contents"
  */
 public class FileAsLinesIndexer {
 
+  public static final String FIELD_FILE_NAME = "file_name";
+  public static final String FIELD_LINE_NUMBER = "line_number";
+  public static final String FIELD_CONTENTS = "contents";
   private static final Logger log = LoggerFactory.getLogger(FileAsLinesIndexer.class);
 
   private final IndexWriter indexWriter;
@@ -59,15 +68,15 @@ public class FileAsLinesIndexer {
     var doc = new Document();
 
     // The name of the file is in-scope for searching. So, include it in the document.
-    Field pathField = new StringField("file_name", fileName, Field.Store.YES);
+    Field pathField = new StringField(FIELD_FILE_NAME, fileName, Field.Store.YES);
     doc.add(pathField);
 
     // The line number is in-scope for searching.
-    doc.add(new LongPoint("line_number", lineNumber));
+    doc.add(new LongPoint(FIELD_LINE_NUMBER, lineNumber));
 
     // todo: when you provide a Reader, then the text is tokenized and indexed. But what if I want to store the string.
     //  I just use String, but does that mean the string is not tokenized and indexed?
-    doc.add(new TextField("contents", text, Field.Store.YES));
+    doc.add(new TextField(FIELD_CONTENTS, text, Field.Store.YES));
 
     return doc;
   }

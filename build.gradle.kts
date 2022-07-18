@@ -19,7 +19,6 @@ dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     runtimeOnly("org.slf4j:slf4j-simple:$slf4jVersion")
 
-    implementation(files("$projectDir/lucene-demo-9.2.0-SNAPSHOT.jar"))
     implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
     implementation("org.apache.lucene:lucene-analysis-common:$luceneVersion")
 }
