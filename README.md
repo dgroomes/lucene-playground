@@ -1,7 +1,5 @@
 # lucene-playground
 
-NOT YET IMPLEMENTED
-
 📚 Learning exploring Apache Lucene: the most widely-used open source search engine.
 
 > Apache Lucene™ is a high-performance, full-featured search engine library written entirely in Java. It is a technology
@@ -24,9 +22,30 @@ software like Elasticsearch and Solr are the go-to technology to enable search i
 Follow these instructions to build and run a Lucene demo program:
 
 1. Use Java 17
-1. Build and run the program:
+2. Build the program distribution:
    * ```shell
-     ./gradlew run
+     ./gradlew installDist
+     ```
+3. Create a convenient alias to run the program:
+   * ```shell
+     alias run="./build/install/lucene-playground/bin/lucene-playground"
+     ```
+4. Run the program:
+   * ```shell
+     run
+     ```
+   * It should look something like this:
+     ```text
+     $ run
+     Indexing to directory '/Users/davidgroomes/repos/personal/lucene-playground/index'...
+     adding /Users/davidgroomes/repos/personal/lucene-playground/src/main/resources/simplelogger.properties
+     adding /Users/davidgroomes/repos/personal/lucene-playground/src/main/java/dgroomes/Runner.java
+     Indexed 2 documents in 442 milliseconds
+     Enter query:
+     info
+     Searching for: info
+     1 total matching documents
+     1. /Users/davidgroomes/repos/personal/lucene-playground/src/main/resources/simplelogger.properties
      ```
 
 ## Notes
@@ -47,9 +66,10 @@ that it's written in JavaDoc.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] Implement a demo that just delegates to the Lucene demo. I've built the Lucene demo jar file from source for
+* [x] DONE Implement a demo that just delegates to the Lucene demo. I've built the Lucene demo jar file from source for
       version 9.2.0. Now I need to copy it in and have the Gradle depend on it.
-
+* [ ] Eject from the official Lucene demo and create a demo of my own. It might be interesting to create an index over
+      JSON files. And then maybe even highlight the query match in the console?
 
 ## Reference
 

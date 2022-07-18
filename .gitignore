@@ -2,3 +2,6 @@
 .DS_Store
 build/
 .gradle/
+
+# The Lucene index goes here
+index/
