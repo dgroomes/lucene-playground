@@ -1,1 +1,5 @@
-The explorer saw 6 animals in the forest: a bear, two deer and three rabbits.
+The explorer
+saw 6 animals in the forest:
+a bear,
+two deer
+and three rabbits.

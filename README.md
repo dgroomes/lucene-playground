@@ -71,8 +71,9 @@ General clean-ups, TODOs and things I wish to implement for this project:
 
 * [x] DONE Implement a demo that just delegates to the Lucene demo. I've built the Lucene demo jar file from source for
       version 9.2.0. Now I need to copy it in and have the Gradle depend on it.
-* [ ] Eject from the official Lucene demo and create a demo of my own. It might be interesting to create an index over
+* [ ] IN PROGRESS Eject from the official Lucene demo and create a demo of my own. It might be interesting to create an index over
       JSON files. And then maybe even highlight the query match in the console?
+* [ ] Make sure unusual characters work. For example, search by emoji.
 
 ## Reference
 
