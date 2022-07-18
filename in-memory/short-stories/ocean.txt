@@ -1,5 +1,0 @@
-The explorer
-saw 6 creatures in the ocean:
-a fish,
-two eel
-and three starfish.

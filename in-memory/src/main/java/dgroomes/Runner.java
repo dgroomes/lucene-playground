@@ -1,71 +1,78 @@
 package dgroomes;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.FSDirectory;
+import org.apache.lucene.store.ByteBuffersDirectory;
+import org.apache.lucene.store.Directory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * This is a simple demo of Apache Lucene. It indexes and searches over the short stories in this Git repository.
- * <p>
- * Specifically, the program indexes the "short-stories/" directory and then executes a few simple searches.
+ * This is a simple demo of Apache Lucene that showcases an in-memory usecase using {@link ByteBuffersDirectory}.
  */
 public class Runner {
-  private static final Path SHORT_STORIES_DIR = Path.of("short-stories");
-  private static final Path INDEX_DIR = Path.of("index");
   private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
   public static void main(String[] args) {
 
-    try (var indexDir = FSDirectory.open(INDEX_DIR);
-         var analyzer = new StandardAnalyzer();
-         var indexWriter = indexWriter(indexDir, analyzer)) {
+    try (var indexDir = new ByteBuffersDirectory();
+         Analyzer analyzer = new StandardAnalyzer()) {
 
-      indexFilesInDirectory(indexWriter, SHORT_STORIES_DIR);
-    } catch (Exception e) {
-      log.error("Unexpected error while indexing.", e);
-      System.exit(1);
-    }
+      try (var indexWriter = indexWriter(indexDir, analyzer)) {
+        indexAllJavaClasses(indexWriter);
+      } catch (Exception e) {
+        log.error("Unexpected error while indexing.", e);
+        System.exit(1);
+      }
 
-    try (var indexDir = FSDirectory.open(INDEX_DIR);
-         var analyzer = new StandardAnalyzer()) {
-
-      search(indexDir, analyzer, "explorer");
-      search(indexDir, analyzer, "fish");
-      search(indexDir, analyzer, "entity");
-    } catch (Exception e) {
-      log.error("Unexpected error while searching.", e);
-      System.exit(1);
+      search(indexDir, new StandardAnalyzer(), "Parser");
+      search(indexDir, new StandardAnalyzer(), "ClassGraph");
+      search(indexDir, new StandardAnalyzer(), "nonapi.io.github.classgraph.types");
+    } catch (IOException | ParseException exception) {
+      log.error("Unexpected error", exception);
     }
   }
 
-  private static void search(FSDirectory indexDir, StandardAnalyzer analyzer, String word) throws IOException, ParseException {
+  private static void search(Directory indexDir, Analyzer analyzer, String keyword) throws IOException, ParseException {
     var reader = DirectoryReader.open(indexDir);
-    log.info("Let's search for the text content: '{}'", word);
+    log.info("Let's search for Java class using the keyword: '{}'", keyword);
     IndexSearcher searcher = new IndexSearcher(reader);
-    QueryParser parser = new QueryParser(FileAsLinesIndexer.FIELD_CONTENTS, analyzer);
-    Query query = parser.parse(word);
 
-    TopDocs results = searcher.search(query, 10);
-    ScoreDoc[] hits = results.scoreDocs;
-    log.info("Found {} hits", hits.length);
+    List<ScoreDoc> hits = new ArrayList<>();
+
+    {
+      QueryParser parser = new QueryParser(JavaClassIndexer.FIELD_CLASS_NAME, analyzer);
+      Query query = parser.parse(keyword);
+      TopDocs results = searcher.search(query, 2000);
+      ScoreDoc[] classNameHits = results.scoreDocs;
+      hits.addAll(List.of(classNameHits));
+    }
+
+    {
+      QueryParser parser = new QueryParser(JavaClassIndexer.FIELD_PACKAGE_NAME, analyzer);
+      Query query = parser.parse(keyword);
+      TopDocs results = searcher.search(query, 2000);
+      ScoreDoc[] packageNameHits = results.scoreDocs;
+      hits.addAll(List.of(packageNameHits));
+    }
+
+    log.info("Found {} hits", hits.size());
 
     for (ScoreDoc hit : hits) {
       Document document = searcher.doc(hit.doc);
@@ -75,21 +82,29 @@ public class Runner {
     log.info("");
   }
 
-  private static void indexFilesInDirectory(IndexWriter indexWriter, Path documentsDir) throws IOException {
-    log.info("Indexing all 'subject documents' in the directory: {}", documentsDir.toAbsolutePath());
-    log.info("Writing the index files to the directory: {}", indexWriter.getDirectory());
+  private static void indexAllJavaClasses(IndexWriter indexWriter) throws IOException {
+    log.info("Indexing all Java classes on the classpath");
 
-    var fileAsLinesIndexer = new FileAsLinesIndexer(indexWriter);
-    Files.walkFileTree(documentsDir, new SimpleFileVisitor<>() {
-      @Override
-      public FileVisitResult visitFile(Path path, BasicFileAttributes attrs) {
-        fileAsLinesIndexer.indexFile(path);
-        return FileVisitResult.CONTINUE;
-      }
-    });
+    ClassGraph classGraph = new ClassGraph().enableClassInfo().enableMethodInfo();
+
+    List<ClassInfo> classInfos;
+    try (var scanResult = classGraph.scan()) {
+      classInfos = scanResult.getAllClasses()
+              .stream()
+              .toList();
+    }
+
+    log.info("Found {} classes. Indexing them...\n", classInfos.size());
+
+    var indexer = new JavaClassIndexer(indexWriter);
+    for (var classInfo : classInfos) {
+      indexer.indexClass(classInfo);
+    }
+
+    log.info("Indexing done.");
   }
 
-  private static IndexWriter indexWriter(FSDirectory dir, StandardAnalyzer analyzer) throws IOException {
+  private static IndexWriter indexWriter(Directory dir, Analyzer analyzer) throws IOException {
     IndexWriterConfig config = new IndexWriterConfig(analyzer);
 
     // This configuration removes any pre-existing index files.

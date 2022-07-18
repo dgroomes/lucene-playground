@@ -34,8 +34,6 @@ See the README in [simple/](simple/).
 
 ### `in-memory/`
 
-NOT YET IMPLEMENTED
-
 A demonstration of Lucene using indexes that reside only in-memory and not on disk.
 
 See the README in [in-memory/](in-memory/).
@@ -56,9 +54,11 @@ with a modern Gradle setup. This is often not the case.
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] IN PROGRESS Use an in-memory index. This is convenient for demos so we don't have to clean up files, but also I'm
+* [x] DONE Use an in-memory index. This is convenient for demos so we don't have to clean up files, but also I'm
       interested in the feature.
 * [x] DONE Split into into independent sub-projects
+* [ ] What's the difference between StringField and TextField?
+* [ ] What's the difference between the class query parser and the other one?
 
 ## Reference
 
