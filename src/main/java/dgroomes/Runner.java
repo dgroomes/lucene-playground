@@ -8,21 +8,21 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
 
 /**
- * This is a simple demo of Apache Lucene. It indexes and searches over the source code of this Git repository.
+ * This is a simple demo of Apache Lucene. It indexes and searches over the short stories in this Git repository.
  *
- * Specifically, the program indexes the "src/" directory and then prompts the user for a query. There are only a couple
- * of files in the "src/" directory, so it makes for a small demo.
+ * Specifically, the program indexes the "short-stories/" directory and then prompts the user for a query.
  */
 public class Runner {
 
-  private final static String SRC_DIR = Path.of("src").toAbsolutePath().toString();
-  private final static String INDEX_DIR = Path.of("index").toAbsolutePath().toString();
+  private static final String SHORT_STORIES_DIR = Path.of("short-stories").toAbsolutePath().toString();
+  private static final String INDEX_DIR = Path.of("index").toAbsolutePath().toString();
+
   private static final Logger log = LoggerFactory.getLogger(Runner.class);
 
   public static void main(String[] args) throws Exception {
     // Note: it's not worth trying to catch an exception because the Lucene demo code just logs to standard error
     // and shuts down the process if something goes wrong.
-    IndexFiles.main(new String[]{"-index", INDEX_DIR, "-docs", SRC_DIR});
+    IndexFiles.main(new String[]{"-index", INDEX_DIR, "-docs", SHORT_STORIES_DIR});
 
     SearchFiles.main(new String[]{});
   }

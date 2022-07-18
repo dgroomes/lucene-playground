@@ -38,14 +38,17 @@ Follow these instructions to build and run a Lucene demo program:
      ```text
      $ run
      Indexing to directory '/Users/davidgroomes/repos/personal/lucene-playground/index'...
-     adding /Users/davidgroomes/repos/personal/lucene-playground/src/main/resources/simplelogger.properties
-     adding /Users/davidgroomes/repos/personal/lucene-playground/src/main/java/dgroomes/Runner.java
-     Indexed 2 documents in 442 milliseconds
+     adding /Users/davidgroomes/repos/personal/lucene-playground/short-stories/forest.txt
+     adding /Users/davidgroomes/repos/personal/lucene-playground/short-stories/ocean.txt
+     adding /Users/davidgroomes/repos/personal/lucene-playground/short-stories/sky.txt
+     Indexed 3 documents in 427 milliseconds
      Enter query:
-     info
-     Searching for: info
-     1 total matching documents
-     1. /Users/davidgroomes/repos/personal/lucene-playground/src/main/resources/simplelogger.properties
+     in the
+     Searching for: in the
+     3 total matching documents
+     1. /Users/davidgroomes/repos/personal/lucene-playground/short-stories/forest.txt
+     2. /Users/davidgroomes/repos/personal/lucene-playground/short-stories/ocean.txt
+     3. /Users/davidgroomes/repos/personal/lucene-playground/short-stories/sky.txt
      ```
 
 ## Notes
