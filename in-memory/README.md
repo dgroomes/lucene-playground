@@ -41,7 +41,7 @@ Follow these instructions to build and run a Lucene demo program:
      ```
    * It should look something like this:
      ```text
-     $ gw run
+     $ ./gradlew run
      
      > Task :run
      17:18:56 [main] INFO dgroomes.Runner - Indexing all Java classes on the classpath

@@ -8,8 +8,8 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.queryparser.classic.ParseException;
-import org.apache.lucene.queryparser.classic.QueryParser;
+import org.apache.lucene.queryparser.flexible.core.QueryNodeException;
+import org.apache.lucene.queryparser.flexible.standard.StandardQueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -31,42 +31,54 @@ public class Runner {
 
   public static void main(String[] args) {
 
-    try (var indexDir = new ByteBuffersDirectory();
+    try (Directory indexDir = new ByteBuffersDirectory();
          Analyzer analyzer = new StandardAnalyzer()) {
 
-      try (var indexWriter = indexWriter(indexDir, analyzer)) {
-        indexAllJavaClasses(indexWriter);
-      } catch (Exception e) {
-        log.error("Unexpected error while indexing.", e);
-        System.exit(1);
-      }
-
-      search(indexDir, new StandardAnalyzer(), "Parser");
-      search(indexDir, new StandardAnalyzer(), "ClassGraph");
-      search(indexDir, new StandardAnalyzer(), "nonapi.io.github.classgraph.types");
-    } catch (IOException | ParseException exception) {
-      log.error("Unexpected error", exception);
+      index(indexDir, analyzer);
+      search(indexDir);
+    } catch (IOException e) {
+      log.error("Unexpected error", e);
+      throw new RuntimeException(e);
     }
   }
 
-  private static void search(Directory indexDir, Analyzer analyzer, String keyword) throws IOException, ParseException {
+  private static void search(Directory indexDir) {
+    try {
+      search(indexDir, new StandardAnalyzer(), "Parser");
+      search(indexDir, new StandardAnalyzer(), "ClassGraph");
+      search(indexDir, new StandardAnalyzer(), "nonapi.io.github.classgraph.types");
+    } catch (IOException | QueryNodeException e) {
+      log.error("Unexpected error while searching", e);
+      System.exit(1);
+    }
+  }
+
+  private static void index(Directory indexDir, Analyzer analyzer) {
+    try (var indexWriter = indexWriter(indexDir, analyzer)) {
+      indexAllJavaClasses(indexWriter);
+    } catch (Exception e) {
+      log.error("Unexpected error while indexing.", e);
+      System.exit(1);
+    }
+  }
+
+  private static void search(Directory indexDir, Analyzer analyzer, String keyword) throws IOException, QueryNodeException {
     var reader = DirectoryReader.open(indexDir);
     log.info("Let's search for Java class using the keyword: '{}'", keyword);
     IndexSearcher searcher = new IndexSearcher(reader);
+    StandardQueryParser queryParser = new StandardQueryParser(analyzer);
 
     List<ScoreDoc> hits = new ArrayList<>();
 
     {
-      QueryParser parser = new QueryParser(JavaClassIndexer.FIELD_CLASS_NAME, analyzer);
-      Query query = parser.parse(keyword);
+      Query query = queryParser.parse(keyword, JavaClassIndexer.FIELD_CLASS_NAME);
       TopDocs results = searcher.search(query, 2000);
       ScoreDoc[] classNameHits = results.scoreDocs;
       hits.addAll(List.of(classNameHits));
     }
 
     {
-      QueryParser parser = new QueryParser(JavaClassIndexer.FIELD_PACKAGE_NAME, analyzer);
-      Query query = parser.parse(keyword);
+      Query query = queryParser.parse(keyword, JavaClassIndexer.FIELD_PACKAGE_NAME);
       TopDocs results = searcher.search(query, 2000);
       ScoreDoc[] packageNameHits = results.scoreDocs;
       hits.addAll(List.of(packageNameHits));

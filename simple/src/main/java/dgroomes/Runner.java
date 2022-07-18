@@ -5,8 +5,8 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.flexible.core.QueryNodeException;
+import org.apache.lucene.queryparser.flexible.standard.StandardQueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -56,12 +56,12 @@ public class Runner {
     }
   }
 
-  private static void search(FSDirectory indexDir, StandardAnalyzer analyzer, String word) throws IOException, ParseException {
+  private static void search(FSDirectory indexDir, StandardAnalyzer analyzer, String word) throws IOException, QueryNodeException {
     var reader = DirectoryReader.open(indexDir);
     log.info("Let's search for the text content: '{}'", word);
     IndexSearcher searcher = new IndexSearcher(reader);
-    QueryParser parser = new QueryParser(FileAsLinesIndexer.FIELD_CONTENTS, analyzer);
-    Query query = parser.parse(word);
+    var parser = new StandardQueryParser(analyzer);
+    Query query = parser.parse(word, FileAsLinesIndexer.FIELD_CONTENTS);
 
     TopDocs results = searcher.search(query, 10);
     ScoreDoc[] hits = results.scoreDocs;

@@ -58,7 +58,9 @@ General clean-ups, TODOs and things I wish to implement for this project:
       interested in the feature.
 * [x] DONE Split into into independent sub-projects
 * [ ] What's the difference between StringField and TextField?
-* [ ] What's the difference between the class query parser and the other one?
+* [x] DONE What's the difference between the class query parser and the other one?
+* [ ] Explore the suggesters feature (mentioned on the [Features page](https://lucene.apache.org/core/features.html))
+* [ ] Explore the highlighting feature (mentioned on the [Features page](https://lucene.apache.org/core/features.html))
 
 ## Reference
 
