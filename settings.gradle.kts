@@ -24,3 +24,4 @@ rootProject.name = "lucene-playground"
 // You get code completion and project navigation out-of-the-box. Pretty slick!
 includeBuild("simple")
 includeBuild("in-memory")
+includeBuild("http-api")

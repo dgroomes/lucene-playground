@@ -38,6 +38,12 @@ A demonstration of Lucene using indexes that reside only in-memory and not on di
 
 See the README in [in-memory/](in-memory/).
 
+### `http-api/`
+
+A demonstration that exposes Lucene search as an HTTP API.
+
+See the README in [http-api/](http-api/).
+
 
 ## Notes
 
