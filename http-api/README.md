@@ -1,7 +1,5 @@
 # http-api
 
-NOT YET IMPLEMENTED
-
 A demonstration that exposes Lucene search as an HTTP API.
 
 
@@ -23,11 +21,38 @@ Follow these instructions to build and run a Lucene demo program:
      ```
 3. Make some search requests
    * ```shell
-     curl -X GET http://localhost:8080
+     curl -X GET http://localhost:8080?keyword=Central
      ```
-   * It should look something like this:
+   * Try some of your own searches. Use Lucene syntax.
+   * Altogether, it might look something like this:
      ```text
-     Found 7 results for the search.
+     $ curl -X GET http://localhost:8080?keyword=Central
+     Search found 7 results for keyword 'Central':
+     	Australian Central Standard Time
+     	Australian Central Western Standard Time
+     	Central Africa Time
+     	Central European Standard Time
+     	Central European Time
+     	Central Indonesia Time
+     	Central Standard Time
+     	
+     $ curl -X GET http://localhost:8080?keyword=Isl
+     No search results found for keyword 'Isl'
+     
+     $ curl -X GET http://localhost:8080?keyword=Isl*
+     Search found 12 results for keyword 'Isl*':
+     	Christmas Island Time
+     	Cocos Islands Time
+     	Cook Islands Standard Time
+     	Easter Island Standard Time
+     	Falkland Islands Standard Time
+     	Gilbert Islands Time
+     	Line Islands Time
+     	Marshall Islands Time
+     	Norfolk Island Standard Time
+     	Phoenix Islands Time
+     	Solomon Islands Time
+     	Wake Island Time
      ```
 4. Stop the server
    * Stop the server process with `Ctrl + C`.
