@@ -47,8 +47,15 @@ public class Runner {
     try (var indexDir = FSDirectory.open(INDEX_DIR);
          var analyzer = new StandardAnalyzer()) {
 
+      log.info("Let's do a basic search...");
       search(indexDir, analyzer, "explorer");
+
+      log.info("Now, let's do a leading wildcard search...");
       search(indexDir, analyzer, "*fish");
+
+      log.info("Now, let's do a search that should engage the stemmer...");
+      // i.e. "entity" should match "entities") NOTE: This doesn't actually yield any search results, and I'm not sure
+      // why.
       search(indexDir, analyzer, "entity");
     } catch (Exception e) {
       log.error("Unexpected error while searching.", e);
@@ -76,7 +83,7 @@ public class Runner {
 
     for (ScoreDoc hit : hits) {
       Document document = searcher.doc(hit.doc);
-      log.info("\tHit: {}", document);
+      log.info("    Hit: {}", document);
     }
 
     log.info("");
