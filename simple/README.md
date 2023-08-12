@@ -56,7 +56,9 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Why aren't line numbers showing up in the search results (i.e. the "Document" hits)? I think it's because the
       `line_number`field is not stored. But now I'm forgetting what a non-stored field even does? You can search on it
       but not retrieve it?
-* [ ] Get logging working. Lucene logs to JUL so we should use the SLF4J JUL bridge. We want to be able to see Lucene
+* [x] SKIPPED (It turns out Lucene logs very little and doesn't even log info, debug or trace. Only warnings and errors.
+  See this [note](https://issues.apache.org/jira/browse/LUCENE-10342). This is interesting and valid, but this means we
+  can't use logs to learn and explore like I thought. Skipped) Get logging working. Lucene logs to JUL so we should use the SLF4J JUL bridge. We want to be able to see Lucene
   logs for debugging and operational purposes.
 
 
