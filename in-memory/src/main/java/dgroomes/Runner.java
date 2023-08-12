@@ -64,7 +64,7 @@ public class Runner {
 
   private static void search(Directory indexDir, Analyzer analyzer, String keyword) throws IOException, QueryNodeException {
     var reader = DirectoryReader.open(indexDir);
-    log.info("Let's search for Java class using the keyword: '{}'", keyword);
+    log.info("Let's search for Java classes using the keyword: '{}'", keyword);
     IndexSearcher searcher = new IndexSearcher(reader);
     StandardQueryParser queryParser = new StandardQueryParser(analyzer);
 

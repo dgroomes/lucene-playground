@@ -3,7 +3,7 @@
 A demonstration that exposes Lucene search as an HTTP API.
 
 
-## Description
+## Overview
 
 A common use case for Lucene is supporting search on websites. A user types in a search phrase on a web page, the browser
 makes an HTTP request to a server, and the server engages Lucene and a Lucene index. The `lucene-playground/http-api`
@@ -18,6 +18,16 @@ Follow these instructions to build and run a Lucene demo program:
 2. Build and run the program:
    * ```shell
      ./gradlew run
+     ```
+   * It should look something like the following.
+   * ```text
+     $ ./gradlew run
+     
+     ... omitted ...
+     
+     11:19:47 [main] INFO dgroomes.TimeZoneSearchSystem - Indexing 165 known time zones.
+     11:19:47 [main] INFO dgroomes.TimeZoneSearchSystem - Indexing done.
+     11:19:47 [main] INFO dgroomes.Runner - The Lucene search server is serving traffic on port 8080
      ```
 3. Make some search requests
    * ```shell

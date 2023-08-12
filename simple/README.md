@@ -2,10 +2,11 @@
 
 This is a simple runnable demo of Lucene. It is a prototypical "hello world" example.
 
----
 
-This demo is vaguely similar [Lucene's official tutorial](https://lucene.apache.org/core/9_2_0/demo/index.html) but it's
-even smaller in scope. Study the code, and experiment with it!
+## Overview
+
+This demo is vaguely similar [Lucene's official tutorial](https://lucene.apache.org/core/9_2_0/demo/index.html), but
+it's even smaller in scope. Study the code, and experiment with it!
 
 
 ## Instructions
@@ -50,6 +51,10 @@ General clean-ups, TODOs and things I wish to implement for this project:
       JSON files. And then maybe even highlight the query match in the console?
 * [ ] Make sure unusual characters work. For example, search by emoji.
 * [x] DONE What does fuzzy searching look like? I want to search with "fish" and find "starfish" as a result.
+* [ ] Actually demonstrate the leading wildcard behavior ("*fish" to match "starfish")
+* [ ] Why aren't line numbers showing up in the search results (i.e. the "Document" hits)? I think it's because the
+      `line_number`field is not stored. But now I'm forgetting what a non-stored field even does? You can search on it
+      but not retrieve it?
 
 
 ## Reference

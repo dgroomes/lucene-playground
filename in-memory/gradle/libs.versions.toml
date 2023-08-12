@@ -1,0 +1,12 @@
+[versions]
+slf4j = "2.0.7" # SLF4J releases: http://www.slf4j.org/news.html
+lucene = "9.7.0" # Lucene releases: https://lucene.apache.org/core/downloads.html
+classgraph = "4.8.162" # ClassGraph releases: https://github.com/classgraph/classgraph/releases
+
+
+[libraries]
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+lucene-queryparser = { module = "org.apache.lucene:lucene-queryparser", version.ref = "lucene" }
+lucene-analysis = { module = "org.apache.lucene:lucene-analysis-common", version.ref = "lucene" }
+classgraph = { module = "io.github.classgraph:classgraph", version.ref = "classgraph" }

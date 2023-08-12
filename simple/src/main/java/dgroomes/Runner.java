@@ -64,7 +64,7 @@ public class Runner {
     {
       // By default, leading wildcards are not allowed because when used, they cause the search to do a full scan of the
       // term index. This is slow relative to a normal index-driven search. For example, you can't search "*fish" in the
-      // hopes if finding matches for "starfish". Fortunately, you can relax this restriction, but you should consider
+      // hopes of finding matches for "starfish". Fortunately, you can relax this restriction, but you should consider
       // the impact to performance.
       parser.setAllowLeadingWildcard(true);
     }

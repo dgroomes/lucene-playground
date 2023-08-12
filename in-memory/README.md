@@ -3,7 +3,7 @@
 A demonstration of Lucene using indexes that reside only in-memory and not on disk.
 
 
-## Description
+## Overview
 
 Most usages of Lucene are through "search engine on search engine" software systems like Elasticsearch and Solr. By contrast,
 many Lucene use-cases are small and can't afford the complexity of these systems. For example, consider a program that
@@ -44,26 +44,26 @@ Follow these instructions to build and run a Lucene demo program:
      $ ./gradlew run
      
      > Task :run
-     17:18:56 [main] INFO dgroomes.Runner - Indexing all Java classes on the classpath
-     17:18:57 [main] INFO dgroomes.Runner - Found 1972 classes. Indexing them...
+     11:26:17 [main] INFO dgroomes.Runner - Indexing all Java classes on the classpath
+     11:26:17 [main] INFO dgroomes.Runner - Found 2052 classes. Indexing them...
      
-     17:18:58 [main] INFO dgroomes.Runner - Indexing done.
-     17:18:58 [main] INFO dgroomes.Runner - Let's search for Java class using the keyword: 'Parser'
-     17:18:58 [main] INFO dgroomes.Runner - Found 2 hits
-     17:18:58 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:Parser> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
-     17:18:58 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:Parser> stored,indexed,tokenized<package_name:org.apache.lucene.analysis.synonym>>
-     17:18:58 [main] INFO dgroomes.Runner -
-     17:18:58 [main] INFO dgroomes.Runner - Let's search for Java class using the keyword: 'ClassGraph'
-     17:18:58 [main] INFO dgroomes.Runner - Found 1 hits
-     17:18:58 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:ClassGraph> stored,indexed,tokenized<package_name:io.github.classgraph>>
-     17:18:58 [main] INFO dgroomes.Runner -
-     17:18:58 [main] INFO dgroomes.Runner - Let's search for Java class using the keyword: 'nonapi.io.github.classgraph.types'
-     17:18:58 [main] INFO dgroomes.Runner - Found 4 hits
-     17:18:58 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:ParseException> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
-     17:18:58 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:Parser> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
-     17:18:58 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:TypeUtils> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
-     17:18:58 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:ModifierType> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
-     17:18:58 [main] INFO dgroomes.Runner -
+     11:26:17 [main] INFO dgroomes.Runner - Indexing done.
+     11:26:17 [main] INFO dgroomes.Runner - Let's search for Java classes using the keyword: 'Parser'
+     11:26:17 [main] INFO dgroomes.Runner - Found 2 hits
+     11:26:17 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:Parser> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
+     11:26:17 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:Parser> stored,indexed,tokenized<package_name:org.apache.lucene.analysis.synonym>>
+     11:26:17 [main] INFO dgroomes.Runner -
+     11:26:17 [main] INFO dgroomes.Runner - Let's search for Java classes using the keyword: 'ClassGraph'
+     11:26:17 [main] INFO dgroomes.Runner - Found 1 hits
+     11:26:17 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:ClassGraph> stored,indexed,tokenized<package_name:io.github.classgraph>>
+     11:26:17 [main] INFO dgroomes.Runner -
+     11:26:17 [main] INFO dgroomes.Runner - Let's search for Java classes using the keyword: 'nonapi.io.github.classgraph.types'
+     11:26:17 [main] INFO dgroomes.Runner - Found 4 hits
+     11:26:17 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:ParseException> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
+     11:26:17 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:Parser> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
+     11:26:17 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:TypeUtils> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
+     11:26:17 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized<class_name:ModifierType> stored,indexed,tokenized<package_name:nonapi.io.github.classgraph.types>>
+     11:26:17 [main] INFO dgroomes.Runner -
      ```
 
 

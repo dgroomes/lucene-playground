@@ -12,17 +12,13 @@ java {
     }
 }
 
-val slf4jVersion = "1.7.36" // SLF4J releases: http://www.slf4j.org/news.html
-val luceneVersion = "9.2.0" // Lucene releases: https://lucene.apache.org/core/downloads.html
-val classGraphVersion = "4.8.149" // ClassGraph releases: https://github.com/classgraph/classgraph/releases
-
 dependencies {
-    implementation("org.slf4j:slf4j-api:$slf4jVersion")
-    runtimeOnly("org.slf4j:slf4j-simple:$slf4jVersion")
+    implementation(libs.slf4j.api)
+    runtimeOnly(libs.slf4j.simple)
 
-    implementation("io.github.classgraph:classgraph:$classGraphVersion")
-    implementation("org.apache.lucene:lucene-queryparser:$luceneVersion")
-    implementation("org.apache.lucene:lucene-analysis-common:$luceneVersion")
+    implementation(libs.classgraph)
+    implementation(libs.lucene.queryparser)
+    implementation(libs.lucene.analysis)
 }
 
 application {
