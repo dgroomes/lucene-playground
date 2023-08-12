@@ -2,6 +2,7 @@ package dgroomes;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -47,16 +48,24 @@ public class Runner {
     try (var indexDir = FSDirectory.open(INDEX_DIR);
          var analyzer = new StandardAnalyzer()) {
 
-      log.info("Let's do a basic search...");
+      log.info("Let's do a basic search. Searching for 'explorer' ...");
       search(indexDir, analyzer, "explorer");
 
-      log.info("Now, let's do a leading wildcard search...");
+      log.info("Now, let's do a leading wildcard search. Searching for '*fish' ...");
       search(indexDir, analyzer, "*fish");
 
-      log.info("Now, let's do a search that should engage the stemmer...");
+      log.info("Now, let's do a search that should engage the stemmer. Searching for 'entity' ...");
       // i.e. "entity" should match "entities") NOTE: This doesn't actually yield any search results, and I'm not sure
       // why.
       search(indexDir, analyzer, "entity");
+
+      log.info("Now, let's do a range search. Searching for lines 2 and earlier ...");
+      {
+        var reader = DirectoryReader.open(indexDir);
+        var searcher = new IndexSearcher(reader);
+        Query query = IntPoint.newRangeQuery(FileAsLinesIndexer.FIELD_LINE_NUMBER, Integer.MIN_VALUE, 2);
+        search(searcher, query);
+      }
     } catch (Exception e) {
       log.error("Unexpected error while searching.", e);
       System.exit(1);
@@ -65,8 +74,7 @@ public class Runner {
 
   private static void search(FSDirectory indexDir, StandardAnalyzer analyzer, String word) throws IOException, QueryNodeException {
     var reader = DirectoryReader.open(indexDir);
-    log.info("Let's search for the text content: '{}'", word);
-    IndexSearcher searcher = new IndexSearcher(reader);
+    var searcher = new IndexSearcher(reader);
     var parser = new StandardQueryParser(analyzer);
     {
       // By default, leading wildcards are not allowed because when used, they cause the search to do a full scan of the
@@ -77,6 +85,13 @@ public class Runner {
     }
     Query query = parser.parse(word, FileAsLinesIndexer.FIELD_CONTENTS);
 
+    search(searcher, query);
+  }
+
+  /**
+   * Execute a search and print the results.
+   */
+  private static void search(IndexSearcher searcher, Query query) throws IOException {
     TopDocs results = searcher.search(query, 10);
     ScoreDoc[] hits = results.scoreDocs;
     log.info("Found {} hits", hits.length);

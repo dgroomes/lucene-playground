@@ -23,25 +23,31 @@ Follow these instructions to build and run a Lucene demo program:
      $ ./gradlew run
      
      > Task :run
-     14:38:34 [main] INFO dgroomes.Runner - Indexing all 'subject documents' in the directory: /Users/dave/repos/personal/lucene-playground/simple/short-stories
-     14:38:34 [main] INFO dgroomes.Runner - Writing the index files to the directory: MMapDirectory@/Users/dave/repos/personal/lucene-playground/simple/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@15c43bd9
-     14:38:34 [main] INFO dgroomes.Runner - Let's do a basic search...
-     14:38:34 [main] INFO dgroomes.Runner - Let's search for the text content: 'explorer'
-     14:38:34 [main] INFO dgroomes.Runner - Found 3 hits
-     14:38:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:forest.txt> stored,indexed,tokenized<contents:The explorer>>
-     14:38:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:The explorer>>
-     14:38:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:sky.txt> stored,indexed,tokenized<contents:The explorer>>
-     14:38:34 [main] INFO dgroomes.Runner -
-     14:38:34 [main] INFO dgroomes.Runner - Now, let's do a leading wildcard search...
-     14:38:34 [main] INFO dgroomes.Runner - Let's search for the text content: '*fish'
-     14:38:34 [main] INFO dgroomes.Runner - Found 2 hits
-     14:38:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:a fish,>>
-     14:38:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:and three starfish.>>
-     14:38:34 [main] INFO dgroomes.Runner -
-     14:38:34 [main] INFO dgroomes.Runner - Now, let's do a search that should engage the stemmer...
-     14:38:34 [main] INFO dgroomes.Runner - Let's search for the text content: 'entity'
-     14:38:34 [main] INFO dgroomes.Runner - Found 0 hits
-     14:38:34 [main] INFO dgroomes.Runner -
+     15:05:34 [main] INFO dgroomes.Runner - Indexing all 'subject documents' in the directory: /Users/dave/repos/personal/lucene-playground/simple/short-stories
+     15:05:34 [main] INFO dgroomes.Runner - Writing the index files to the directory: MMapDirectory@/Users/dave/repos/personal/lucene-playground/simple/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@15c43bd9
+     15:05:34 [main] INFO dgroomes.Runner - Let's do a basic search. Searching for 'explorer' ...
+     15:05:34 [main] INFO dgroomes.Runner - Found 3 hits
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:forest.txt> stored,indexed,tokenized<contents:The explorer>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:The explorer>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:sky.txt> stored,indexed,tokenized<contents:The explorer>>
+     15:05:34 [main] INFO dgroomes.Runner -
+     15:05:34 [main] INFO dgroomes.Runner - Now, let's do a leading wildcard search. Searching for '*fish' ...
+     15:05:34 [main] INFO dgroomes.Runner - Found 2 hits
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:a fish,>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:and three starfish.>>
+     15:05:34 [main] INFO dgroomes.Runner -
+     15:05:34 [main] INFO dgroomes.Runner - Now, let's do a search that should engage the stemmer. Searching for 'entity' ...
+     15:05:34 [main] INFO dgroomes.Runner - Found 0 hits
+     15:05:34 [main] INFO dgroomes.Runner -
+     15:05:34 [main] INFO dgroomes.Runner - Now, let's do a range search. Searching for lines 2 and earlier ...
+     15:05:34 [main] INFO dgroomes.Runner - Found 6 hits
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:forest.txt> stored,indexed,tokenized<contents:The explorer>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:forest.txt> stored,indexed,tokenized<contents:saw 6 animals in the forest:>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:The explorer>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:saw 6 creatures in the ocean:>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:sky.txt> stored,indexed,tokenized<contents:The explorer>>
+     15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:sky.txt> stored,indexed,tokenized<contents:saw 6 entities in the sky:>>
+     15:05:34 [main] INFO dgroomes.Runner -
      ```
 
 
@@ -56,7 +62,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
 * [ ] Make sure unusual characters work. For example, search by emoji.
 * [x] DONE What does fuzzy searching look like? I want to search with "fish" and find "starfish" as a result.
 * [x] DONE Actually demonstrate the leading wildcard behavior ("*fish" to match "starfish")
-* [ ] Why aren't line numbers showing up in the search results (i.e. the "Document" hits)? I think it's because the
+* [x] DONE Why aren't line numbers showing up in the search results (i.e. the "Document" hits)? I think it's because the
       `line_number`field is not stored. But now I'm forgetting what a non-stored field even does? You can search on it
       but not retrieve it? So can you search for a specific line number?
 * [x] SKIPPED (It turns out Lucene logs very little and doesn't even log info, debug or trace. Only warnings and errors.

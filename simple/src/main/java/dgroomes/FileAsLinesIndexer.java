@@ -16,7 +16,7 @@ import java.nio.file.Path;
  * The shape of the index is:
  * <p>
  * - A {@link String} field named "file_name"
- * - A {@link LongPoint} field name "line_number"
+ * - A {@link IntPoint} field name "line_number"
  * - A {@link TextField} field named "contents"
  */
 public class FileAsLinesIndexer {
@@ -72,7 +72,7 @@ public class FileAsLinesIndexer {
     doc.add(pathField);
 
     // The line number is in-scope for searching.
-    doc.add(new LongPoint(FIELD_LINE_NUMBER, lineNumber));
+    doc.add(new IntPoint(FIELD_LINE_NUMBER, lineNumber));
 
     // todo: when you provide a Reader, then the text is tokenized and indexed. But what if I want to store the string.
     //  I just use String, but does that mean the string is not tokenized and indexed?
