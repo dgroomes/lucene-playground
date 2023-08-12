@@ -23,21 +23,22 @@ Follow these instructions to build and run a Lucene demo program:
      $ ./gradlew run
      
      > Task :run
-     13:59:59 [main] INFO dgroomes.Runner - Indexing all 'subject documents' in the directory: /Users/davidgroomes/repos/personal/lucene-playground/simple/short-stories
-     13:59:59 [main] INFO dgroomes.Runner - Writing the index files to the directory: MMapDirectory@/Users/davidgroomes/repos/personal/lucene-playground/simple/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@26be92ad
-     14:00:00 [main] INFO dgroomes.Runner - Let's search for the text content: 'explorer'
-     14:00:00 [main] INFO dgroomes.Runner - Found 3 hits
-     14:00:00 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:forest.txt> stored,indexed,tokenized<contents:The explorer>>
-     14:00:00 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:The explorer>>
-     14:00:00 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:sky.txt> stored,indexed,tokenized<contents:The explorer>>
-     14:00:00 [main] INFO dgroomes.Runner -
-     14:00:00 [main] INFO dgroomes.Runner - Let's search for the text content: 'fish'
-     14:00:00 [main] INFO dgroomes.Runner - Found 1 hits
-     14:00:00 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:a fish,>>
-     14:00:00 [main] INFO dgroomes.Runner -
-     14:00:00 [main] INFO dgroomes.Runner - Let's search for the text content: 'entity'
-     14:00:00 [main] INFO dgroomes.Runner - Found 0 hits
-     14:00:00 [main] INFO dgroomes.Runner -
+     13:17:55 [main] INFO dgroomes.Runner - Indexing all 'subject documents' in the directory: /Users/dave/repos/personal/lucene-playground/simple/short-stories
+     13:17:55 [main] INFO dgroomes.Runner - Writing the index files to the directory: MMapDirectory@/Users/dave/repos/personal/lucene-playground/simple/index lockFactory=org.apache.lucene.store.NativeFSLockFactory@15c43bd9
+     13:17:55 [main] INFO dgroomes.Runner - Let's search for the text content: 'explorer'
+     13:17:55 [main] INFO dgroomes.Runner - Found 3 hits
+     13:17:55 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:forest.txt> stored,indexed,tokenized<contents:The explorer>>
+     13:17:55 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:The explorer>>
+     13:17:55 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:sky.txt> stored,indexed,tokenized<contents:The explorer>>
+     13:17:55 [main] INFO dgroomes.Runner -
+     13:17:55 [main] INFO dgroomes.Runner - Let's search for the text content: '*fish'
+     13:17:55 [main] INFO dgroomes.Runner - Found 2 hits
+     13:17:55 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:a fish,>>
+     13:17:55 [main] INFO dgroomes.Runner -  Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:and three starfish.>>
+     13:17:55 [main] INFO dgroomes.Runner -
+     13:17:55 [main] INFO dgroomes.Runner - Let's search for the text content: 'entity'
+     13:17:55 [main] INFO dgroomes.Runner - Found 0 hits
+     13:17:55 [main] INFO dgroomes.Runner -
      ```
 
 
@@ -51,10 +52,12 @@ General clean-ups, TODOs and things I wish to implement for this project:
       JSON files. And then maybe even highlight the query match in the console?
 * [ ] Make sure unusual characters work. For example, search by emoji.
 * [x] DONE What does fuzzy searching look like? I want to search with "fish" and find "starfish" as a result.
-* [ ] Actually demonstrate the leading wildcard behavior ("*fish" to match "starfish")
+* [x] DONE Actually demonstrate the leading wildcard behavior ("*fish" to match "starfish")
 * [ ] Why aren't line numbers showing up in the search results (i.e. the "Document" hits)? I think it's because the
       `line_number`field is not stored. But now I'm forgetting what a non-stored field even does? You can search on it
       but not retrieve it?
+* [ ] Get logging working. Lucene logs to JUL so we should use the SLF4J JUL bridge. We want to be able to see Lucene
+  logs for debugging and operational purposes.
 
 
 ## Reference

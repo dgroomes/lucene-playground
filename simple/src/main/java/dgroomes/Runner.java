@@ -48,7 +48,7 @@ public class Runner {
          var analyzer = new StandardAnalyzer()) {
 
       search(indexDir, analyzer, "explorer");
-      search(indexDir, analyzer, "fish");
+      search(indexDir, analyzer, "*fish");
       search(indexDir, analyzer, "entity");
     } catch (Exception e) {
       log.error("Unexpected error while searching.", e);
@@ -99,7 +99,8 @@ public class Runner {
   private static IndexWriter indexWriter(FSDirectory dir, StandardAnalyzer analyzer) throws IOException {
     IndexWriterConfig config = new IndexWriterConfig(analyzer);
 
-    // This configuration removes any pre-existing index files.
+    // This configuration removes any pre-existing index files (although this won't work if the encoding changed, like
+    // I experienced with the evolution from the Lucene92 to Lucene95 encoding. I had to delete the index by manually.)
     config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
 
     return new IndexWriter(dir, config);
