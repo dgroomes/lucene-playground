@@ -36,7 +36,7 @@ Follow these instructions to build and run a Lucene demo program:
      15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:a fish,>>
      15:05:34 [main] INFO dgroomes.Runner -     Hit: Document<stored,indexed,tokenized,omitNorms,indexOptions=DOCS<file_name:ocean.txt> stored,indexed,tokenized<contents:and three starfish.>>
      15:05:34 [main] INFO dgroomes.Runner -
-     15:05:34 [main] INFO dgroomes.Runner - Now, let's do a search that should engage the stemmer. Searching for 'entity' ...
+     15:05:34 [main] INFO dgroomes.Runner - Now, let's do an English language-oriented search. Searching for 'entity' (this will yield 0 results!) ...
      15:05:34 [main] INFO dgroomes.Runner - Found 0 hits
      15:05:34 [main] INFO dgroomes.Runner -
      15:05:34 [main] INFO dgroomes.Runner - Now, let's do a range search. Searching for lines 2 and earlier ...
@@ -69,7 +69,7 @@ General clean-ups, TODOs and things I wish to implement for this project:
   See this [note](https://issues.apache.org/jira/browse/LUCENE-10342). This is interesting and valid, but this means we
   can't use logs to learn and explore like I thought. Skipped) Get logging working. Lucene logs to JUL so we should use the SLF4J JUL bridge. We want to be able to see Lucene
   logs for debugging and operational purposes.
-* [ ] Why doesn't `entity` match `entities`?
+* [x] DONE (no stemming analyzer) Why doesn't `entity` match `entities`?
 
 
 ## Reference

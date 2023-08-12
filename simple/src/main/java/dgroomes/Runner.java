@@ -54,9 +54,11 @@ public class Runner {
       log.info("Now, let's do a leading wildcard search. Searching for '*fish' ...");
       search(indexDir, analyzer, "*fish");
 
-      log.info("Now, let's do a search that should engage the stemmer. Searching for 'entity' ...");
-      // i.e. "entity" should match "entities") NOTE: This doesn't actually yield any search results, and I'm not sure
-      // why.
+      log.info("Now, let's do an English language-oriented search. Searching for 'entity' (this will yield 0 results!) ...");
+      // This will yield no results even though we know the word 'entities' appears in the 'sky.txt' short story. The
+      // content was indexed and searched with the Lucene StandardAnalyzer which does not perform stemming. By contrast,
+      // the EnglishAnalyzer would stem the words 'entity' and 'entities' to their common root form 'entiti'. It's
+      // important to understand the analyzer you're using and how it affects the index and the search.
       search(indexDir, analyzer, "entity");
 
       log.info("Now, let's do a range search. Searching for lines 2 and earlier ...");
