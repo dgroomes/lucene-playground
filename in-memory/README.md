@@ -67,6 +67,20 @@ Follow these instructions to build and run a Lucene demo program:
      ```
 
 
+## Wish List
+
+General clean-ups, TODOs and things I wish to implement for this project:
+
+* [ ] Facet search. I'm new to facets. Still trying to get a feel for them. What's a good candidate for facet search with
+  the Java classes domain? I think maybe modules? While there are probably too many unique packages to be used effectively
+  as a (dimension of?) a facet, I think the number of unique modules make modules a good candidate.
+  * Index modules.
+  * "Search result-side" face implementation. Facets present at the search-side but also at the search result-side (even
+    without specifying them in the search). I have to implement the search result-side first
+  * "Search-side" facet implementation.
+  * Related document changes / finishing touches.
+
+
 ## Reference
 
 * [JavaDoc for `ByteBuffersDirectory`](https://lucene.apache.org/core/9_2_0/core/org/apache/lucene/store/ByteBuffersDirectory.html)

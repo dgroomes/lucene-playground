@@ -5,7 +5,7 @@ This is a simple runnable demo of Lucene. It is a prototypical "hello world" exa
 
 ## Overview
 
-This demo is vaguely similar [Lucene's official tutorial](https://lucene.apache.org/core/9_2_0/demo/index.html), but
+This demo is vaguely similar to [Lucene's official tutorial](https://lucene.apache.org/core/9_2_0/demo/index.html), but
 it's even smaller in scope. Study the code, and experiment with it!
 
 
