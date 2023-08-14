@@ -71,7 +71,7 @@ Follow these instructions to build and run a Lucene demo program:
 
 General clean-ups, TODOs and things I wish to implement for this project:
 
-* [ ] IN PROGRESS Facet search. I'm new to facets. Still trying to get a feel for them. What's a good candidate for facet search with
+* [x] SKIP (This would be better to do in my `http-api` subproject because it's interactive and also I encapsulated a nice `TimeZoneSearchSystem` abstraction there) Facet search. I'm new to facets. Still trying to get a feel for them. What's a good candidate for facet search with
   the Java classes domain? I think maybe modules? While there are probably too many unique packages to be used effectively
   as a (dimension of?) a facet, I think the number of unique modules make modules a good candidate.
   * DONE Index modules.

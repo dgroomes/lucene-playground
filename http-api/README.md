@@ -66,3 +66,15 @@ Follow these instructions to build and run a Lucene demo program:
      ```
 4. Stop the server
    * Stop the server process with `Ctrl + C`.
+
+
+## Wish List
+
+General clean-ups, TODOs and things I wish to implement for this project:
+
+* [ ] Facet search. Define facets on maybe "observes daylight savings time" and one other dimension?
+   * Index (and "facet" index?) "observes daylight savings time".
+   * "Search result-side" face implementation. Facets present at the search-side but also at the search result-side (even
+     without specifying them in the search). I have to implement the search result-side first
+   * "Search-side" facet implementation. Maybe a query param?
+   * Related document changes / finishing touches.
