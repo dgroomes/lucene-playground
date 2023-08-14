@@ -6,6 +6,7 @@ import org.apache.lucene.document.IntPoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.queryparser.flexible.core.QueryNodeException;
 import org.apache.lucene.queryparser.flexible.standard.StandardQueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -48,23 +49,24 @@ public class Runner {
     try (var indexDir = FSDirectory.open(INDEX_DIR);
          var analyzer = new StandardAnalyzer()) {
 
+      var reader = DirectoryReader.open(indexDir);
+      var searcher = new IndexSearcher(reader);
+
       log.info("Let's do a basic search. Searching for 'explorer' ...");
-      search(indexDir, analyzer, "explorer");
+      search(searcher, analyzer, "explorer");
 
       log.info("Now, let's do a leading wildcard search. Searching for '*fish' ...");
-      search(indexDir, analyzer, "*fish");
+      search(searcher, analyzer, "*fish");
 
       log.info("Now, let's do an English language-oriented search. Searching for 'entity' (this will yield 0 results!) ...");
       // This will yield no results even though we know the word 'entities' appears in the 'sky.txt' short story. The
       // content was indexed and searched with the Lucene StandardAnalyzer which does not perform stemming. By contrast,
       // the EnglishAnalyzer would stem the words 'entity' and 'entities' to their common root form 'entiti'. It's
       // important to understand the analyzer you're using and how it affects the index and the search.
-      search(indexDir, analyzer, "entity");
+      search(searcher, analyzer, "entity");
 
       log.info("Now, let's do a range search. Searching for lines 2 and earlier ...");
       {
-        var reader = DirectoryReader.open(indexDir);
-        var searcher = new IndexSearcher(reader);
         Query query = IntPoint.newRangeQuery(FileAsLinesIndexer.FIELD_LINE_NUMBER, Integer.MIN_VALUE, 2);
         search(searcher, query);
       }
@@ -74,9 +76,7 @@ public class Runner {
     }
   }
 
-  private static void search(FSDirectory indexDir, StandardAnalyzer analyzer, String word) throws IOException, QueryNodeException {
-    var reader = DirectoryReader.open(indexDir);
-    var searcher = new IndexSearcher(reader);
+  private static void search(IndexSearcher searcher, StandardAnalyzer analyzer, String word) throws QueryNodeException, IOException {
     var parser = new StandardQueryParser(analyzer);
     {
       // By default, leading wildcards are not allowed because when used, they cause the search to do a full scan of the
@@ -94,12 +94,19 @@ public class Runner {
    * Execute a search and print the results.
    */
   private static void search(IndexSearcher searcher, Query query) throws IOException {
+    StoredFields storedFields;
+    try {
+      storedFields = searcher.storedFields();
+    } catch (IOException e) {
+      throw new RuntimeException("Something went wrong during search initialization.", e);
+    }
+
     TopDocs results = searcher.search(query, 10);
     ScoreDoc[] hits = results.scoreDocs;
     log.info("Found {} hits", hits.length);
 
     for (ScoreDoc hit : hits) {
-      Document document = searcher.doc(hit.doc);
+      Document document = storedFields.document(hit.doc);
       log.info("    Hit: {}", document);
     }
 

@@ -6,6 +6,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.queryparser.flexible.core.QueryNodeException;
 import org.apache.lucene.queryparser.flexible.standard.StandardQueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -68,6 +69,12 @@ public class TimeZoneSearchSystem {
 
     log.info("Searching for time zones using the keyword: '{}'", keyword);
     IndexSearcher searcher = new IndexSearcher(reader);
+    StoredFields storedFields;
+    try {
+      storedFields = searcher.storedFields();
+    } catch (IOException e) {
+      throw new RuntimeException("Something went wrong during search initialization.", e);
+    }
     StandardQueryParser queryParser = new StandardQueryParser(new StandardAnalyzer());
 
     List<ScoreDoc> hits;
@@ -86,7 +93,7 @@ public class TimeZoneSearchSystem {
     return hits.stream()
             .map(hit -> {
               try {
-                return searcher.doc(hit.doc);
+                return storedFields.document(hit.doc);
               } catch (IOException e) {
                 throw new IllegalStateException("Unexpected error while getting the document from the index", e);
               }

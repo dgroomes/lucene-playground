@@ -8,6 +8,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.StoredFields;
 import org.apache.lucene.queryparser.flexible.core.QueryNodeException;
 import org.apache.lucene.queryparser.flexible.standard.StandardQueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -24,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is a simple demo of Apache Lucene that showcases an in-memory usecase using {@link ByteBuffersDirectory}.
+ * This is a simple demo of Apache Lucene that showcases an in-memory use case using {@link ByteBuffersDirectory}.
  */
 public class Runner {
   private static final Logger log = LoggerFactory.getLogger(Runner.class);
@@ -66,6 +67,12 @@ public class Runner {
     var reader = DirectoryReader.open(indexDir);
     log.info("Let's search for Java classes using the keyword: '{}'", keyword);
     IndexSearcher searcher = new IndexSearcher(reader);
+    StoredFields storedFields;
+    try {
+      storedFields = searcher.storedFields();
+    } catch (IOException e) {
+      throw new RuntimeException("Something went wrong during search initialization.", e);
+    }
     StandardQueryParser queryParser = new StandardQueryParser(analyzer);
 
     List<ScoreDoc> hits = new ArrayList<>();
@@ -87,7 +94,7 @@ public class Runner {
     log.info("Found {} hits", hits.size());
 
     for (ScoreDoc hit : hits) {
-      Document document = searcher.doc(hit.doc);
+      Document document = storedFields.document(hit.doc);
       log.info("\tHit: {}", document);
     }
 
