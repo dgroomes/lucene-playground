@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.http.components)
     implementation(libs.lucene.queryparser)
     implementation(libs.lucene.analysis)
+    implementation(libs.lucene.facet)
 }
 
 application {

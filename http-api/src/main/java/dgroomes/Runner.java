@@ -24,9 +24,10 @@ public class Runner {
   public static void main(String[] args) {
 
     try (Directory indexDir = new ByteBuffersDirectory();
+         Directory taxonomyDir = new ByteBuffersDirectory();
          Analyzer analyzer = new StandardAnalyzer()) {
 
-      TimeZoneSearchSystem searchSystem = TimeZoneSearchSystem.init(indexDir, analyzer);
+      TimeZoneSearchSystem searchSystem = TimeZoneSearchSystem.init(indexDir, analyzer, taxonomyDir);
       runServerContinuously(searchSystem);
     } catch (IOException e) {
       log.error("Unexpected error", e);

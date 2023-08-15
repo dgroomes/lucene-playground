@@ -73,3 +73,8 @@ General clean-ups, TODOs and things I wish to implement for this project:
 
 * [Apache Lucene](https://lucene.apache.org)
 * [GitHub repo: `apache/lucene`](https://github.com/apache/lucene)
+* [Apache Lucene *Facet Userguide and Demo*](https://lucene.apache.org/core/9_7_0/demo/org/apache/lucene/demo/facet/package-summary.html)
+  * JavaDocs can be so rich in content. It's a shame how difficult they are to discover, read (font size too small, at least)
+    and visually scan (in my opinion). This one is a good one and I wish I had found it sooner. Below is a quote.
+  * > In faceted search, in addition to the standard set of search results, we also get facet results, which are lists
+    > of subcategories for certain categories.

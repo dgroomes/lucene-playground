@@ -8,14 +8,13 @@ import org.apache.hc.core5.http.io.HttpRequestHandler;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.net.URIBuilder;
-import org.apache.lucene.document.Document;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 /**
@@ -39,25 +38,28 @@ class HttpHandler implements HttpRequestHandler {
     }
 
     var keyword = keywordOpt.get();
-    List<Document> results = timeZoneSearchSystem.search(keyword);
+    TimeZoneSearchSystem.SearchResults results = timeZoneSearchSystem.search(keyword);
 
-    var msgBody = results.stream()
-            .map(doc -> doc.get(Indexer.FIELD_TIME_ZONE_DISPLAY_NAME))
-            .sorted()
-            .map(timeZone -> {
+    var msgBody = results.hits().stream()
+            .map(doc -> {
+              String id = doc.get(TimeZoneIndexer.FIELD_ID);
+              TimeZone timeZone = TimeZone.getTimeZone(id);
+              String description = toString(timeZone);
               // Indent it for easier reading.
-              return "\t" + timeZone;
+              return "\t" + description;
             })
             .collect(Collectors.joining("\n", "", ""));
 
     String msg;
-    if (results.isEmpty()) {
+    if (results.hits().isEmpty()) {
       msg = "No search results found for keyword '%s'".formatted(keyword);
     } else {
+
+      // TODO add facet results to the message body
       msg = """
               Search found %d results for keyword '%s':
               %s
-              """.formatted(results.size(), keyword, msgBody);
+              """.formatted(results.hits().size(), keyword, msgBody);
     }
 
     var responseBody = new StringEntity(msg);
@@ -95,5 +97,16 @@ class HttpHandler implements HttpRequestHandler {
             .getQueryParams()
             .stream()
             .collect(Collectors.toMap(nameValuePair -> nameValuePair.getName().toLowerCase(), NameValuePair::getValue));
+  }
+
+  /**
+   * This is used to format the TimeZone object search result in a way that reflects the fields we've showcased: ID,
+   * offset and "observes daylight savings time".
+   */
+  public static String toString(TimeZone timeZone) {
+    return "%s (%s) offset=%s observesDST=%s".formatted(timeZone.getDisplayName(),
+            timeZone.getID(),
+            TimeZoneIndexer.getOffsetDescription(timeZone),
+            timeZone.observesDaylightTime());
   }
 }
