@@ -43,12 +43,13 @@ public class Runner {
 
     ServerBootstrap builder = ServerBootstrap.bootstrap()
             .setListenerPort(PORT)
+            .setExceptionListener(new LoggingExceptionListener())
             .register("*", simulatorHttpHandler);
 
     try (HttpServer server = builder.create()) {
       server.start();
       Runtime.getRuntime().addShutdownHook(new Thread(() -> server.close(CloseMode.GRACEFUL)));
-      log.info("The Lucene search server is serving traffic on port {}", PORT);
+      log.info("The Lucene search server is serving traffic on port {} ...", PORT);
       server.awaitTermination(TimeValue.MAX_VALUE);
     } catch (InterruptedException e) {
       log.error("The server was interrupted.", e);

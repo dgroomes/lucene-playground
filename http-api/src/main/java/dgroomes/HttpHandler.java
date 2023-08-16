@@ -2,14 +2,12 @@ package dgroomes;
 
 import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ClassicHttpResponse;
-import org.apache.hc.core5.http.HttpException;
 import org.apache.hc.core5.http.NameValuePair;
 import org.apache.hc.core5.http.io.HttpRequestHandler;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.net.URIBuilder;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -29,7 +27,7 @@ class HttpHandler implements HttpRequestHandler {
   }
 
   @Override
-  public void handle(final ClassicHttpRequest request, final ClassicHttpResponse response, final HttpContext context) throws HttpException, IOException {
+  public void handle(final ClassicHttpRequest request, final ClassicHttpResponse response, final HttpContext context) {
     Optional<String> keywordOpt = parseKeyword(request);
     if (keywordOpt.isEmpty()) {
       response.setCode(400);
@@ -38,28 +36,27 @@ class HttpHandler implements HttpRequestHandler {
     }
 
     var keyword = keywordOpt.get();
-    TimeZoneSearchSystem.SearchResults results = timeZoneSearchSystem.search(keyword);
-
-    var msgBody = results.hits().stream()
-            .map(doc -> {
-              String id = doc.get(TimeZoneIndexer.FIELD_ID);
-              TimeZone timeZone = TimeZone.getTimeZone(id);
-              String description = toString(timeZone);
-              // Indent it for easier reading.
-              return "\t" + description;
-            })
-            .collect(Collectors.joining("\n", "", ""));
+    TimeZoneSearchSystem.SearchResult result = timeZoneSearchSystem.search(keyword);
 
     String msg;
-    if (results.hits().isEmpty()) {
+    if (result.hits().isEmpty()) {
       msg = "No search results found for keyword '%s'".formatted(keyword);
     } else {
+      var hitsSerialized = result.hits().stream()
+              .map(doc -> {
+                String id = doc.get(TimeZoneIndexer.FIELD_ID);
+                TimeZone timeZone = TimeZone.getTimeZone(id);
+                String description = toString(timeZone);
+                // Indent it for easier reading.
+                return "\t" + description;
+              })
+              .collect(Collectors.joining("\n", "", ""));
 
       // TODO add facet results to the message body
       msg = """
               Search found %d results for keyword '%s':
               %s
-              """.formatted(results.hits().size(), keyword, msgBody);
+              """.formatted(result.hits().size(), keyword, hitsSerialized);
     }
 
     var responseBody = new StringEntity(msg);

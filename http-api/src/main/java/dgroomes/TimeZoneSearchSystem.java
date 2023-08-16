@@ -58,7 +58,12 @@ public class TimeZoneSearchSystem {
     return timeZoneSearchSystem;
   }
 
-  public record SearchResults(List<Document> hits, FacetResult facetResult) {}
+  /**
+   * The results of a search. It contains the "hits" (the matching documents) and the facet results.
+   * @param hits
+   * @param facetResult
+   */
+  public record SearchResult(List<Document> hits, FacetResult facetResult) {}
 
   /**
    * Search for the given keyword.
@@ -68,7 +73,7 @@ public class TimeZoneSearchSystem {
    * results (the "hits") AND the facet results? That way, it's one search and then the user has the option to narrow
    * down the results using the facets if they're satisfied with the top hits.
    */
-  public SearchResults search(String keyword) {
+  public SearchResult search(String keyword) {
     IndexReader indexReader;
     TaxonomyReader taxonomyReader;
 
@@ -88,6 +93,7 @@ public class TimeZoneSearchSystem {
       throw new RuntimeException("Something went wrong during search initialization.", e);
     }
     StandardQueryParser queryParser = new StandardQueryParser(new StandardAnalyzer());
+    queryParser.setAllowLeadingWildcard(true);
     FacetsCollector facetsCollector = new FacetsCollector();
 
     List<ScoreDoc> hits;
@@ -133,7 +139,7 @@ public class TimeZoneSearchSystem {
     } catch (IOException e) {
       throw new RuntimeException("Failed to close the reader", e);
     }
-    return new SearchResults(results, facetResult);
+    return new SearchResult(results, facetResult);
   }
 
   /**
