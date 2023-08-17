@@ -7,6 +7,7 @@ import org.apache.hc.core5.http.io.HttpRequestHandler;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.protocol.HttpContext;
 import org.apache.hc.core5.net.URIBuilder;
+import org.apache.lucene.facet.FacetResult;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -42,21 +43,27 @@ class HttpHandler implements HttpRequestHandler {
     if (result.hits().isEmpty()) {
       msg = "No search results found for keyword '%s'".formatted(keyword);
     } else {
+      var facetsSerialized = result.facetResults().stream()
+              .map(FacetResult::toString)
+              .collect(Collectors.joining("\n", "", ""));
+
       var hitsSerialized = result.hits().stream()
               .map(doc -> {
                 String id = doc.get(TimeZoneIndexer.FIELD_ID);
                 TimeZone timeZone = TimeZone.getTimeZone(id);
-                String description = toString(timeZone);
-                // Indent it for easier reading.
-                return "\t" + description;
+                return toString(timeZone);
               })
               .collect(Collectors.joining("\n", "", ""));
 
-      // TODO add facet results to the message body
       msg = """
-              Search found %d results for keyword '%s':
+              Search found %d hits for keyword '%s'.
+              
+              Facet results:
               %s
-              """.formatted(result.hits().size(), keyword, hitsSerialized);
+              
+              Hits:
+              %s
+              """.formatted(result.hits().size(), keyword, facetsSerialized.indent(4), hitsSerialized.indent(4));
     }
 
     var responseBody = new StringEntity(msg);

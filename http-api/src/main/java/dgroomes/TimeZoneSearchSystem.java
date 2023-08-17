@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * This class encapsulates a "search system".
@@ -60,10 +61,8 @@ public class TimeZoneSearchSystem {
 
   /**
    * The results of a search. It contains the "hits" (the matching documents) and the facet results.
-   * @param hits
-   * @param facetResult
    */
-  public record SearchResult(List<Document> hits, FacetResult facetResult) {}
+  public record SearchResult(List<Document> hits, List<FacetResult> facetResults) {}
 
   /**
    * Search for the given keyword.
@@ -97,7 +96,7 @@ public class TimeZoneSearchSystem {
     FacetsCollector facetsCollector = new FacetsCollector();
 
     List<ScoreDoc> hits;
-    FacetResult facetResult;
+    List<FacetResult> facetResults;
 
     try {
 
@@ -116,12 +115,22 @@ public class TimeZoneSearchSystem {
       hits = List.of(packageNameHits);
 
       Facets facets = new FastTaxonomyFacetCounts(taxonomyReader, facetsConfig, facetsCollector);
-      facetResult = facets.getTopChildren(Integer.MAX_VALUE, TimeZoneIndexer.FIELD_OBSERVES_DAYLIGHT_SAVINGS_TIME);
+      facetResults = Stream.of(
+              TimeZoneIndexer.FIELD_OBSERVES_DAYLIGHT_SAVINGS_TIME,
+              TimeZoneIndexer.FIELD_TIME_ZONE_DISPLAY_NAME,
+              TimeZoneIndexer.FIELD_OFFSET_DESCRIPTION).map(field -> {
+        try {
+          return facets.getTopChildren(Integer.MAX_VALUE, field);
+        } catch (IOException e) {
+          throw new RuntimeException("Failed to get the facet results for field: " + field, e);
+        }
+      }).filter(Objects::nonNull).toList();
+
     } catch (QueryNodeException | IOException e) {
       throw new IllegalStateException("Unexpected error while searching", e);
     }
 
-    log.info("Found {} hits. Found facet result: {}", hits.size(), facetResult);
+    log.info("Found {} hits. Found {} facet results", hits.size(), facetResults.size());
 
     List<Document> results = hits.stream()
             .map(hit -> {
@@ -139,7 +148,7 @@ public class TimeZoneSearchSystem {
     } catch (IOException e) {
       throw new RuntimeException("Failed to close the reader", e);
     }
-    return new SearchResult(results, facetResult);
+    return new SearchResult(results, facetResults);
   }
 
   /**

@@ -20,7 +20,7 @@ import java.util.TimeZone;
 public class TimeZoneIndexer {
 
   public static final String FIELD_ID = "id";
-  public static final String FIELD_OFFSET = "offset";
+  public static final String FIELD_OFFSET_DESCRIPTION = "offset";
   public static final String FIELD_OBSERVES_DAYLIGHT_SAVINGS_TIME = "observes_daylight_savings_time";
   public static final String FIELD_TIME_ZONE_DISPLAY_NAME = "time_zone_display_name";
 
@@ -36,7 +36,7 @@ public class TimeZoneIndexer {
   public void index(TimeZone timeZone) throws IOException {
     var doc = new Document();
     doc.add(new TextField(FIELD_ID, timeZone.getID(), Field.Store.YES));
-    doc.add(new FacetField(FIELD_OFFSET, getOffsetDescription(timeZone)));
+    doc.add(new FacetField(FIELD_OFFSET_DESCRIPTION, getOffsetDescription(timeZone)));
     doc.add(new FacetField(FIELD_OBSERVES_DAYLIGHT_SAVINGS_TIME, Boolean.toString(timeZone.observesDaylightTime())));
 
     // I'm so confused. When you treat a field as a facet, you can't get the field in the result, and you can't even
