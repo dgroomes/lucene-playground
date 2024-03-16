@@ -14,7 +14,7 @@ project implements a runnable Java program that embeds Lucene embedded into a we
 
 Follow these instructions to build and run a Lucene demo program:
 
-1. Use Java 17
+1. Use Java 21
 2. Build and run the program:
    * ```shell
      ./gradlew run
@@ -25,7 +25,7 @@ Follow these instructions to build and run a Lucene demo program:
      
      ... omitted ...
      
-     11:19:47 [main] INFO dgroomes.TimeZoneSearchSystem - Indexing 165 known time zones.
+     11:19:47 [main] INFO dgroomes.TimeZoneSearchSystem - Indexing 605 known time zones.
      11:19:47 [main] INFO dgroomes.TimeZoneSearchSystem - Indexing done.
      11:19:47 [main] INFO dgroomes.Runner - The Lucene search server is serving traffic on port 8080
      ```
@@ -43,7 +43,7 @@ Follow these instructions to build and run a Lucene demo program:
      	  true (54)
      	  false (11)
      
-     	dim=time_zone_display_name path=[] value=65 childCount=13
+     	dim=time_zone_display_name path=[] value=65 childCount=12
      	  Central European Standard Time (31)
      	  Eastern European Standard Time (16)
      	  ...omitted...

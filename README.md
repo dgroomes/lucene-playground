@@ -26,17 +26,20 @@ re-using the code.
 
 The subprojects include:
 
+
 ### `simple/`
 
 This is a simple runnable demo of Lucene. It is a prototypical "hello world" example.
 
 See the README in [simple/](simple/).
 
+
 ### `in-memory/`
 
 A demonstration of Lucene using indexes that reside only in-memory and not on disk.
 
 See the README in [in-memory/](in-memory/).
+
 
 ### `http-api/`
 
@@ -77,4 +80,4 @@ General clean-ups, TODOs and things I wish to implement for this project:
   * JavaDocs can be so rich in content. It's a shame how difficult they are to discover, read (font size too small, at least)
     and visually scan (in my opinion). This one is a good one and I wish I had found it sooner. Below is a quote.
   * > In faceted search, in addition to the standard set of search results, we also get facet results, which are lists
-    > of subcategories for certain categories.
+      of subcategories for certain categories.
