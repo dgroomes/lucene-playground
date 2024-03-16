@@ -1,7 +1,7 @@
 [versions]
-slf4j = "2.0.7" # SLF4J releases: http://www.slf4j.org/news.html
-lucene = "9.7.0" # Lucene releases: https://lucene.apache.org/core/downloads.html
-classgraph = "4.8.162" # ClassGraph releases: https://github.com/classgraph/classgraph/releases
+slf4j = "2.0.12" # SLF4J releases: http://www.slf4j.org/news.html
+lucene = "9.10.0" # Lucene releases: https://lucene.apache.org/core/downloads.html
+classgraph = "4.8.168" # ClassGraph releases: https://github.com/classgraph/classgraph/releases
 
 
 [libraries]
