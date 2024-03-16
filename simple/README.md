@@ -13,7 +13,7 @@ it's even smaller in scope. Study the code, and experiment with it!
 
 Follow these instructions to build and run a Lucene demo program:
 
-1. Use Java 17
+1. Use Java 21
 2. Build and run the program:
    * ```shell
      ./gradlew run
