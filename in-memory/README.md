@@ -34,7 +34,7 @@ note that Lucene generally warns you away from this class and instead asks you t
 
 Follow these instructions to build and run a Lucene demo program:
 
-1. Use Java 17
+1. Use Java 21
 2. Build and run the program:
    * ```shell
      ./gradlew run
